@@ -9,6 +9,14 @@
     </style>
 }
 
+@if(!string.IsNullOrEmpty(Model.Message))
+{
+    <div class="border border-danger p-3 border-3">
+        <p class="mb-0">@Model.Message</p>
+    </div>
+}
+
+@if(Model.CanAddArtist()) {
 <form method="post" asp-page-handler="NewArtist">
     <div class="row">
         <div class="col-6">
@@ -43,16 +51,10 @@
     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
     <button class="mt-2 btn btn-primary">Speichern</button>
 </form>
+}
 
 <h3>Artists in the database</h3>
 <p>Found @Model.Artists.Count Artists at @DateTime.Now.ToString("HH:mm")</p>
-
-@if(!string.IsNullOrEmpty(Model.Message))
-{
-    <div class="border border-danger p-3 border-3">
-        <p class"mb-0">@Model.Message</p>
-    </div>
-}
 
 <table class="table table-sm">
     <thead>

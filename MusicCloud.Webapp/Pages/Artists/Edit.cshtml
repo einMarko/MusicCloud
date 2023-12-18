@@ -21,8 +21,8 @@
         </tr>
         <tr>
             <td><label asp-for="Artist.Birthday">Birthday</label></td>
-            <td><input asp-for="Artist.Birthday" /></td>
-            <td colespan="2"><span class="text-danger" asp-validation-for="Artist.Birthday"></span></td>
+            <td><input asp-for="Artist.Birthday" type="date" value="@Model.Artist.Birthday.ToString("yyyy-MM-dd")"/></td>
+            <td colespan="2"><span class="text-danger" asp-validation-for="Artist.Birthday"ö></span></td>
         </tr>
         <tr>
             <td colspan="2" style="text-align:center"><button type="submit">Send</button></td>

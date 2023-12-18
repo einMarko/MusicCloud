@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MusicCloud.Application.infrastructure;
 using MusicCloud.Application.Infrastructure.Repositories;
+using MusicCloud.Application.models;
 using MusicCloud.Webapp.Dto;
 using MusicCloud.Webapp.Services;
 
@@ -27,8 +28,10 @@ namespace MusicCloud.Webapp.Pages.Albums
         }
         [BindProperty]
         public AlbumDto Album { get; set; } = null!;
+        [TempData]
+        public string? Message { get; set; }
         public IEnumerable<SelectListItem> ArtistSelectList =>
-            _artists.Set.OrderBy(a => a.ArtistName).Select(a => new SelectListItem(a.ArtistName, a.Guid.ToString()));
+            _artists.Set.OrderBy(ar => ar.ArtistName).Select(ar => new SelectListItem(ar.ArtistName, ar.Guid.ToString()));
         public IActionResult OnPost(Guid guid)
         {
             if (!ModelState.IsValid) { return Page(); }
@@ -36,10 +39,16 @@ namespace MusicCloud.Webapp.Pages.Albums
                 .Include(a => a.Artist)
                 .Include(a => a.Songs)
                 .FirstOrDefault(a => a.Guid == guid);
-            if (album is null) { return RedirectToPage("/Artists/Index"); }
+            if (album is null) {
+                Message = "The album doesn't exist.";
+                return RedirectToPage("/Artists/Index");
+            }
             
             var artist = _artists.FindByGuid(Album.ArtistGuid);
-            if (artist is null) { return RedirectToPage("/Artists/Index"); }
+            if (artist is null) {
+                Message = "The artist doesn't exist.";
+                return RedirectToPage("/Artists/Index");
+            }
             album.Artist = artist;
 
             album.Songs.ToList().ForEach(a => a.Artist = artist);

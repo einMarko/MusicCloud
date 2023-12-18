@@ -25,11 +25,16 @@ namespace MusicCloud.Webapp.Pages.Artists
         }
         [BindProperty]
         public ArtistDto Artist { get; set; } = null!;
+        [TempData]
+        public string? Message { get; set; }
         public IActionResult OnPost(Guid guid)
         {
             if (!ModelState.IsValid) { return Page(); }
             var artist = _artists.FindByGuid(guid);
-            if (artist is null) { return RedirectToPage("/Artists/Index"); }
+            if (artist is null) {
+                Message = "The artist doesn't exist.";
+                return RedirectToPage("/Artists/Index");
+            }
             _mapper.Map(Artist, artist);
             var (success, message) = _artists.Update(artist);
             if (!success)

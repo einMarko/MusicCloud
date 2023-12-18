@@ -21,7 +21,7 @@
         </tr>
         <tr>
             <td><label asp-for="Album.ReleaseDate">Release Date</label></td>
-            <td><input asp-for="Album.ReleaseDate"/></td>
+            <td><input asp-for="Album.ReleaseDate" type="date" value="@Model.Album.ReleaseDate.ToString("yyyy-MM-dd")" /></td>
             <td colespan="2"><span class="text-danger" asp-validation-for="Album.ReleaseDate"></span></td>
         </tr>
         <tr>

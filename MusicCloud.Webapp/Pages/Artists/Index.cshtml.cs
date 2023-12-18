@@ -29,8 +29,14 @@ namespace MusicCloud.Webapp.Pages.Artists
         }
         [BindProperty]
         public ArtistDto NewArtist { get; set; } = default!;
+        [TempData]
+        public string? Message { get; set; }
         public IActionResult OnPostNewArtist(Guid guid)
         {
+            if(!_authService.IsAdmin) {
+                Message = "You are not authorized to add an Artist";
+                return Page(); 
+            }
             if (!ModelState.IsValid) { return Page(); }
             var artist = _mapper.Map<Artist>(NewArtist);
             var (success, message) = _artists.Insert(artist);
@@ -41,8 +47,6 @@ namespace MusicCloud.Webapp.Pages.Artists
             }
             return RedirectToPage();
         }
-        [TempData]
-        public string? Message { get; set; }
         public IActionResult OnGet()
         {
             return Page();
@@ -54,7 +58,11 @@ namespace MusicCloud.Webapp.Pages.Artists
         }
 
         public bool CanEditArtist(Guid artistGuid) =>
-            _authService.IsAdmin ||
-            Artists.FirstOrDefault(ar => ar.Guid == artistGuid)?.Manager?.Username == _authService.Username;
+            (_authService.IsAdmin ||
+            Artists.FirstOrDefault(ar => ar.Guid == artistGuid)?.Manager?.Username == _authService.Username)
+            && _authService.IsAuthenticated;
+
+        public bool CanAddArtist() =>
+            _authService.IsAdmin;
     }
 }
