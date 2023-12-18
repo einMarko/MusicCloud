@@ -1,0 +1,31 @@
+﻿@page "{guid}"
+@model MusicCloud.Webapp.Pages.Albums.EditAlbumModel
+
+<form method="post">
+    <input type="hidden" asp-for="Album.Guid"/>
+    <table>
+        <tr>
+            <td><label asp-for="Album.ArtistGuid">Artist</label></td>
+            <td>
+                <select 
+                    asp-items="@Model.ArtistSelectList"
+                    asp-for="Album.ArtistGuid">
+                </select>
+            </td>
+            <td colespan="2"><span class="text-danger" asp-validation-for="Album.ArtistGuid"></span></td>
+        </tr>
+        <tr>
+            <td><label asp-for="Album.Title">Title</label></td>
+            <td><input asp-for="Album.Title" /></td>
+            <td colespan="2"><span class="text-danger" asp-validation-for="Album.Title"></span></td>
+        </tr>
+        <tr>
+            <td><label asp-for="Album.ReleaseDate">Release Date</label></td>
+            <td><input asp-for="Album.ReleaseDate"/></td>
+            <td colespan="2"><span class="text-danger" asp-validation-for="Album.ReleaseDate"></span></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align:center"><button type="submit">Send</button></td>
+        </tr>
+    </table>
+</form>

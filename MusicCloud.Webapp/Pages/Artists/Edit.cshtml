@@ -1,0 +1,31 @@
+﻿@page "{guid}"
+@model MusicCloud.Webapp.Pages.Artists.EditArtistModel
+
+<form method="post">
+    <input type="hidden" asp-for="Artist.Guid"/>
+    <table>
+        <tr>
+            <td><label asp-for="Artist.ArtistName">Artist Name</label></td>
+            <td><input asp-for="Artist.ArtistName" /></td>
+            <td colespan="2"><span class="text-danger" asp-validation-for="Artist.ArtistName"></span></td>
+        </tr>
+        <tr>
+            <td><label asp-for="Artist.FirstName">First Name</label></td>
+            <td><input asp-for="Artist.FirstName" /></td>
+            <td colespan="2"><span class="text-danger" asp-validation-for="Artist.FirstName"></span></td>
+        </tr>
+        <tr>
+            <td><label asp-for="Artist.LastName">Last Name</label></td>
+            <td><input asp-for="Artist.LastName" /></td>
+            <td colespan="2"><span class="text-danger" asp-validation-for="Artist.LastName"></span></td>
+        </tr>
+        <tr>
+            <td><label asp-for="Artist.Birthday">Birthday</label></td>
+            <td><input asp-for="Artist.Birthday" /></td>
+            <td colespan="2"><span class="text-danger" asp-validation-for="Artist.Birthday"></span></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align:center"><button type="submit">Send</button></td>
+        </tr>
+    </table>
+</form>

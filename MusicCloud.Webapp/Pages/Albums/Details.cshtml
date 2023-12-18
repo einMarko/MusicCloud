@@ -1,0 +1,93 @@
+﻿@page "{guid}"
+@model MusicCloud.Webapp.Pages.Albums.AlbumDetailsModel
+@section head
+    {
+    <style>
+        .tableHead {
+            background-color: lightgray;
+        }
+    </style>
+}
+
+<h3>Details to the album <b>@Model.Album.Title</b></h3>
+<br />
+
+<h5>
+    Title: <b>@Model.Album.Title</b><br />
+    Artist: <b><a asp-page="/Artists/Details" asp-route-guid="@Model.Album.Artist.Guid">@Model.Album.Artist.ArtistName</a></b><br />
+    Release Date: <b>@Model.Album.ReleaseDate</b><br />
+    Total amount of songs: <b>@Model.Album.Songs.Count</b>
+</h5><br />
+
+<h4>List of all songs</h4>
+<form method="post" asp-page-handler="EditSong">
+    <table class="table table-sm">
+        <thead class="tableHead">
+            <tr>
+                <th>Title</th>
+                <th>Genre</th>
+                <th>Length</th>
+                <th>Release Date</th>
+                @if(Model.CanEditAlbum(Model.Album.Guid)) {
+                    <th>Action</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var s in Model.Album.Songs)
+            {
+                if(Model.CanEditAlbum(Model.Album.Guid)) {
+                    <tr>
+                        <td>
+                            <input type="hidden" asp-for="EditSongs[s.Guid].Guid" />
+                            <input type="hidden" asp-for="EditSongs[s.Guid].AlbumGuid" />
+                            <input asp-for="EditSongs[s.Guid].Title" type="text" class="form-control" placeholder="Title" value="@s.Title" />
+                            <small>
+                                <span class="text-danger" asp-validation-for="EditSongs[s.Guid].Title"></span>
+                            </small>
+                        </td>
+                        <td>@s.Genre.Name</td>
+                        <td>
+                            @{
+                                int minutes = (int)Math.Floor((double)s.Length / 60);
+                                int seconds = s.Length % 60;
+                                <input asp-for="EditSongs[s.Guid].Length" type="text" class="form-control" placeholder="Length (mm:ss)" pattern="\d{1,2}:\d{2}" value="@String.Format("{0:D2}:{1:D2}", minutes, seconds)" />
+                                <small>
+                                    <span class="text-danger" asp-validation-for="EditSongs[s.Guid].Length"></span>
+                                </small>
+                            }
+                        </td>
+                        <td>
+                            <input asp-for="EditSongs[s.Guid].ReleaseDate" type="date" value="@s.ReleaseDate.ToString("yyyy-MM-dd")" />
+                            <small>
+                                <span class="text-danger" asp-validation-for="EditSongs[s.Guid].ReleaseDate"></span>
+                            </small>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary"
+                                type="submit" 
+                                asp-page-handler="EditSong"
+                                asp-route-songGuid="@s.Guid">
+                                Save
+                            </button>
+                        </td>
+                    </tr>
+                } else
+                {
+                    <tr>
+                        <td>@s.Title</td>
+                        <td>@s.Genre.Name</td>
+                        <td>
+                            @{
+                                int minutes = (int)Math.Floor((double)s.Length / 60);
+                                int seconds = s.Length % 60;
+                                @String.Format("{0:D2}:{1:D2}", minutes, seconds)
+                            }
+                        </td>
+                        <td>@s.ReleaseDate.ToString("dd.MM.yyyy")</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</form>

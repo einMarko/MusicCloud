@@ -1,0 +1,48 @@
+﻿@page "{guid}"
+@model MusicCloud.Webapp.Pages.Artists.ArtistDetailsModel
+@section head
+    {
+    <style>
+        .tableHead {
+            background-color: lightgray;
+        }
+    </style>
+}
+
+<h3>Details to the artist <b>@Model.Artist.ArtistName</b></h3><br />
+
+<h5>
+    First Name: <b>@Model.Artist.FirstName</b><br />
+    Last Name: <b>@Model.Artist.LastName</b><br />
+    Birth Date: <b>@Model.Artist.Birthday</b><br />
+    Total amount of albums: <b>@Model.Artist.Albums.Count</b><br />
+    Total amount of songs: <b>@Model.Artist.Songs.Count</b>
+</h5><br />
+
+<h4>List of all albums</h4>
+<table class="table table-sm">
+    <thead class="tableHead">
+        <tr>
+            <th>Title</th>
+            <th>Release date</th>
+            <th>Number of songs</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var a in Model.Artist.Albums.OrderBy(a => a.ReleaseDate))
+        {
+            <tr>
+                <td>@a.Title</td>
+                <td>@a.ReleaseDate.ToString("dd.MM.yyyy")</td>
+                <td>@a.Songs.Count</td>
+                <td>
+                    <a asp-page="/Albums/Details" asp-route-guid="@a.Guid">Details</a>
+                    @if(Model.CanEditAlbum(a.Guid)) {
+                        <a asp-page="/Albums/Edit" asp-route-guid="@a.Guid">Edit</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

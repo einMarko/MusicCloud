@@ -1,0 +1,90 @@
+﻿@page
+@model MusicCloud.Webapp.Pages.Artists.IndexModel
+@section head
+{
+    <style>
+        .tableHead {
+            background-color:lightgray;
+        }
+    </style>
+}
+
+<form method="post" asp-page-handler="NewArtist">
+    <div class="row">
+        <div class="col-6">
+            <label asp-for="NewArtist.ArtistName">Artist Name</label>
+            <input class="form-control" asp-for="NewArtist.ArtistName" />
+            <small>
+                <span class="text-danger" asp-validation-for="NewArtist.ArtistName"></span>
+            </small>
+        </div>
+        <div class="col-6">
+            <label asp-for="NewArtist.FirstName">First Name</label>
+                <input class="form-control" asp-for="NewArtist.FirstName" />
+                <small>
+                    <span class="text-danger" asp-validation-for="NewArtist.FirstName"></span>
+                </small>
+        </div>
+        <div class="col-6">
+            <label asp-for="NewArtist.LastName">Last Name</label>
+                <input class="form-control" asp-for="NewArtist.LastName" />
+                <small>
+                    <span class="text-danger" asp-validation-for="NewArtist.LastName"></span>
+                </small>
+        </div>
+        <div class="col-6">
+            <label asp-for="NewArtist.Birthday">Birthday</label>
+            <input class="form-control" asp-for="NewArtist.Birthday" type="date" value="@DateTime.Now.AddYears(-18).ToString("yyyy-MM-dd")" max="@DateTime.Now.AddYears(-18).ToString("yyyy-MM-dd")" />
+                <small>
+                    <span class="text-danger" asp-validation-for="NewArtist.Birthday"></span>
+                </small>
+        </div>
+    </div>
+    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+    <button class="mt-2 btn btn-primary">Speichern</button>
+</form>
+
+<h3>Artists in the database</h3>
+<p>Found @Model.Artists.Count Artists at @DateTime.Now.ToString("HH:mm")</p>
+
+@if(!string.IsNullOrEmpty(Model.Message))
+{
+    <div class="border border-danger p-3 border-3">
+        <p class"mb-0">@Model.Message</p>
+    </div>
+}
+
+<table class="table table-sm">
+    <thead>
+        <tr class="tableHead">
+            <th>Artist Name</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Birthday</th>
+            <th>Albums</th>
+            <th>Songs</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var ar in Model.Artists)
+        {
+            <tr>
+                <td>@ar.ArtistName</td>
+                <td>@ar.FirstName</td>
+                <td>@ar.LastName</td>
+                <td>@ar.Birthday.ToString("dd.MM.yyyy")</td>
+                <td>@ar.AlbumsCount</td>
+                <td>@ar.SongsCount</td>
+                <td>
+                    <a asp-page="/Artists/Details" asp-route-guid="@ar.Guid">Details</a>
+                    @if(Model.CanEditArtist(ar.Guid)) {
+                        <a asp-page="/Artists/Edit" asp-route-guid="@ar.Guid">Edit</a>
+                        <a asp-page="/Artists/Delete" asp-route-guid="@ar.Guid">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
