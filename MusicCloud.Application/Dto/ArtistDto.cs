@@ -1,5 +1,6 @@
 ﻿using MusicCloud.Application.infrastructure;
 using MusicCloud.Application.Infrastructure.Repositories;
+using MusicCloud.Application.Model;
 using System.ComponentModel.DataAnnotations;
 
 namespace MusicCloud.Webapp.Dto
@@ -29,6 +30,7 @@ namespace MusicCloud.Webapp.Dto
         string FirstName,
         [StringLength(30, MinimumLength = 2, ErrorMessage = "The last name must be between 2 and 30 characters long")]
         string LastName,
+        Guid? ManagerGuid,
         [ValidBirthday]
         DateTime Birthday);
 }

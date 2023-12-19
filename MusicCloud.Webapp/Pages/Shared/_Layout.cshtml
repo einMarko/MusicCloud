@@ -38,7 +38,7 @@
                     <div>
                         @if(AuthService.IsAuthenticated)
                         {
-                            <p>Angemeldet als @AuthService.Username
+                            <p>Logged in as @AuthService.Username
                                 <small class="ms-2"><a asp-page="/User/Logout">Logout</a></small>
                             </p>
                         }

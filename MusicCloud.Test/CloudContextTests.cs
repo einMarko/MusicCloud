@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MusicCloud.Application.infrastructure;
+using MusicCloud.Application.Infrastructure;
 using Xunit;
 
 namespace MusicCloud.Test
@@ -20,17 +21,17 @@ namespace MusicCloud.Test
             return db;
         }
 
-        /*[Fact]
+        [Fact]
         public void CreateDatabaseSuccessTest()
         {
             using var db = GetDatabase(deleteDb: true);
-        }*/
+        }
 
         [Fact]
         public void testSeeds()
         {
             using var db = GetDatabase(deleteDb: true);
-            db.Seed();
+            db.Seed(new CryptService());
 
             Assert.True(db.Artists.ToList().Count > 0);
             Assert.True(db.Albums.ToList().Count > 0);

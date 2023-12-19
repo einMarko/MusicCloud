@@ -47,6 +47,16 @@
                     <span class="text-danger" asp-validation-for="NewArtist.Birthday"></span>
                 </small>
         </div>
+        <div class="col-6">
+            <label asp-for="NewArtist.ManagerGuid">Manager</label>
+                <select class="form-control" asp-items="@Model.ManagerSelectList"
+                        asp-for="NewArtist.ManagerGuid">
+                        <option value="" selected>No Manager</option>
+                </select>
+            <small>
+                    <span class="text-danger" asp-validation-for="NewArtist.ManagerGuid"></span>
+            </small>
+        </div>
     </div>
     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
     <button class="mt-2 btn btn-primary">Speichern</button>
